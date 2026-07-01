@@ -2,6 +2,23 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
+
+<!-- ============================================================ -->
+<!-- 📊 後台統計 (Analytics) - GA4 追蹤碼                          -->
+<!-- ============================================================ -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HLRN8KJD9H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HLRN8KJD9H');
+</script>
+<!-- 測驗成績寫入 Google 試算表的網址(第二階段完成後貼上) -->
+<script>
+  window.QUIZ_LOG_URL = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec";
+</script>
+<!-- ============================================================ -->
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="color-scheme" content="dark">
 <title>IABP 護理訓練</title>
@@ -202,7 +219,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
       <div class="logo-icon">❤️</div>
       <div>
         <div class="logo-text">IABP 護理訓練</div>
-        <div class="logo-sub">台中榮總 CVCU · 2026</div>
+        <div class="logo-sub">臺中榮總 CVCU · 2026</div>
       </div>
     </div>
     <div class="score-row">
@@ -565,12 +582,55 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 let score=0, streak=0, quizAnswered=[], currentQ=0, isPlugged=false;
 let animFrame, miniFrame;
 
+/* ============================================================
+   📊 後台統計 (Analytics)
+   ============================================================ */
+function getLearnerId(){
+  try {
+    let id = localStorage.getItem('iabp_learner_id');
+    if(!id){
+      id = 'L' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+      localStorage.setItem('iabp_learner_id', id);
+    }
+    return id;
+  } catch(e){ return 'anon'; }
+}
+const LEARNER_ID = getLearnerId();
+
+function trackGA(eventName, params){
+  try {
+    if(typeof gtag === 'function'){
+      gtag('event', eventName, Object.assign({learner_id: LEARNER_ID}, params||{}));
+    }
+  } catch(e){}
+}
+
+function logToSheet(data){
+  try {
+    if(!window.QUIZ_LOG_URL || window.QUIZ_LOG_URL.indexOf('YOUR_DEPLOYMENT_ID')>=0) return;
+    const payload = Object.assign({
+      learner_id: LEARNER_ID,
+      timestamp: new Date().toISOString(),
+      user_agent: navigator.userAgent
+    }, data);
+    fetch(window.QUIZ_LOG_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    }).catch(function(){});
+  } catch(e){}
+}
+trackGA('page_view', {page_title: 'IABP 護理訓練首頁'});
+
 // ---- NAVIGATION ----
 function switchMain(idx){
   document.querySelectorAll('.main-page').forEach((p,i)=>p.classList.toggle('active',i===idx));
   document.querySelectorAll('.main-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
   if(idx===2) setTimeout(initMiniWave,100);
   if(idx===3 && currentQ===0 && quizAnswered.length===0) renderQuiz();
+  const tabNames=['簡介','波形','照護','測驗'];
+  trackGA('tab_view', {tab_name: tabNames[idx]});
 }
 
 function switchSub(group, idx, btn){
@@ -710,6 +770,9 @@ function answerQ(chosen){
   else{streak=0;showToast('❌ 再想想！','danger')}
   document.getElementById('totalScore').textContent=score;
   document.getElementById('streakCount').textContent=streak;
+  // 📊 記錄每題答題狀況
+  trackGA('quiz_answer', {question_num: currentQ+1, is_correct: ok, chosen: chosen, correct_answer: questions[currentQ].correct});
+  logToSheet({event: 'quiz_answer', question_num: currentQ+1, is_correct: ok, chosen_option: chosen, correct_option: questions[currentQ].correct, current_score: score});
   renderQuiz();
 }
 
@@ -719,6 +782,9 @@ function showComplete(){
   document.getElementById('completeFinal').textContent=c+'/7';
   document.getElementById('completeMsg').textContent=c>=5?'優秀！臨床能力紮實 🌟':c>=4?'良好！繼續加強 💪':'需要多加練習 📚';
   document.getElementById('completeOv').classList.add('show');
+  // 📊 記錄完整測驗成績
+  trackGA('quiz_complete', {correct_count: c, total_questions: questions.length, final_score: score});
+  logToSheet({event: 'quiz_complete', correct_count: c, total_questions: questions.length, final_score: score, percentage: Math.round(c/questions.length*100)});
 }
 function restartQuiz(){
   currentQ=0;score=0;streak=0;quizAnswered=[];
@@ -772,6 +838,9 @@ function submitChecklist(){
   const pct=Math.round(chk/all*100);
   if(pct===100){showToast('🎉 交班清單全部完成！','success');score+=30;document.getElementById('totalScore').textContent=score}
   else showToast(`⚠️ 完成 ${pct}%，請確認所有項目`,'warn');
+  // 📊 記錄交班清單完成率
+  trackGA('checklist_submit', {completion_pct: pct, checked: chk, total: all});
+  logToSheet({event:'checklist_submit', completion_pct: pct, checked: chk, total: all});
 }
 
 // ---- TOAST ----
