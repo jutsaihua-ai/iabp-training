@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -213,6 +211,27 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </style>
 </head>
 <body>
+
+<!-- 員工編號輸入畫面 (研究統計用) -->
+<div id="loginOverlay" style="position:fixed;inset:0;background:#0a0e1a;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px">
+  <div style="max-width:400px;width:100%;background:#111827;border:2px solid #00d4ff;border-radius:16px;padding:28px 22px;text-align:center;box-shadow:0 0 40px rgba(0,212,255,.25)">
+    <div style="font-size:44px;margin-bottom:8px">❤️</div>
+    <div style="font-size:20px;font-weight:900;color:#00d4ff;margin-bottom:4px">IABP 護理訓練</div>
+    <div style="font-size:12px;color:#7a9cc0;margin-bottom:20px">台中榮總 CVCU · 2026</div>
+    <div style="font-size:13px;color:#e0eaff;margin-bottom:16px;text-align:left;line-height:1.7">
+      請輸入您的員工編號開始訓練<br>
+      <span style="font-size:11px;color:#7a9cc0">📊 系統會記錄您的作答狀況以供訓練成效分析</span>
+    </div>
+    <input id="empIdInput" type="text" placeholder="例如: N12345"
+      style="width:100%;padding:14px;font-size:16px;background:#0a0e1a;color:#e0eaff;border:1.5px solid #1e3a5f;border-radius:10px;outline:none;font-family:inherit;text-align:center;letter-spacing:2px;margin-bottom:12px"
+      autocomplete="off" autocapitalize="characters">
+    <div id="empErr" style="font-size:12px;color:#ff3b5c;margin-bottom:12px;min-height:18px"></div>
+    <button id="empSubmit" style="width:100%;padding:13px;background:#00d4ff;color:#000;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit">開始訓練 →</button>
+    <div style="font-size:10px;color:#7a9cc0;margin-top:12px;line-height:1.5">
+      您的員工編號僅用於訓練記錄與研究分析,不會分享給第三方
+    </div>
+  </div>
+</div>
 
 <!-- HEADER -->
 <div class="hdr">
@@ -585,35 +604,77 @@ let score=0, streak=0, quizAnswered=[], currentQ=0, isPlugged=false;
 let animFrame, miniFrame;
 
 /* ============================================================
-   📊 後台統計 (Analytics)
+   📊 後台統計 + 研究資料收集
    ============================================================ */
-function getLearnerId(){
-  try {
-    let id = localStorage.getItem('iabp_learner_id');
-    if(!id){
-      id = 'L' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
-      localStorage.setItem('iabp_learner_id', id);
-    }
-    return id;
-  } catch(e){ return 'anon'; }
-}
-const LEARNER_ID = getLearnerId();
 
+// 員工編號登入處理
+let EMP_ID = null;
+let SESSION_ID = null;
+let SESSION_START = null;
+let QUESTION_START = null;
+let quizAttemptData = []; // 暫存本次測驗的所有作答,用於 quiz_complete 時一併送出
+
+(function initLogin(){
+  // 從 sessionStorage 恢復(重整後仍保持登入)
+  try {
+    const savedId = sessionStorage.getItem('iabp_emp_id');
+    const savedSession = sessionStorage.getItem('iabp_session_id');
+    if(savedId && savedSession){
+      EMP_ID = savedId;
+      SESSION_ID = savedSession;
+      SESSION_START = parseInt(sessionStorage.getItem('iabp_session_start') || Date.now());
+      document.getElementById('loginOverlay').style.display = 'none';
+      return;
+    }
+  } catch(e){}
+
+  const input = document.getElementById('empIdInput');
+  const btn = document.getElementById('empSubmit');
+  const err = document.getElementById('empErr');
+
+  function submit(){
+    const val = (input.value || '').trim().toUpperCase();
+    if(!val){ err.textContent = '請輸入員工編號'; return; }
+    if(val.length < 3){ err.textContent = '員工編號至少 3 個字元'; return; }
+    if(val.length > 20){ err.textContent = '員工編號過長'; return; }
+    // 建立 session
+    EMP_ID = val;
+    SESSION_ID = 'S' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+    SESSION_START = Date.now();
+    try {
+      sessionStorage.setItem('iabp_emp_id', EMP_ID);
+      sessionStorage.setItem('iabp_session_id', SESSION_ID);
+      sessionStorage.setItem('iabp_session_start', SESSION_START);
+    } catch(e){}
+    document.getElementById('loginOverlay').style.display = 'none';
+    // 記錄登入事件
+    trackGA('session_start', {emp_id: EMP_ID});
+    logToSheet({event:'session_start'});
+  }
+  btn.addEventListener('click', submit);
+  input.addEventListener('keydown', function(e){ if(e.key === 'Enter') submit(); });
+  setTimeout(function(){ input.focus(); }, 300);
+})();
+
+// 送出事件到 GA4
 function trackGA(eventName, params){
   try {
     if(typeof gtag === 'function'){
-      gtag('event', eventName, Object.assign({learner_id: LEARNER_ID}, params||{}));
+      gtag('event', eventName, Object.assign({emp_id: EMP_ID, session_id: SESSION_ID}, params||{}));
     }
   } catch(e){}
 }
 
+// 送出事件到 Google 試算表
 function logToSheet(data){
   try {
     if(!window.QUIZ_LOG_URL || window.QUIZ_LOG_URL.indexOf('YOUR_DEPLOYMENT_ID')>=0) return;
     const payload = Object.assign({
-      learner_id: LEARNER_ID,
+      emp_id: EMP_ID,
+      session_id: SESSION_ID,
       timestamp: new Date().toISOString(),
-      user_agent: navigator.userAgent
+      user_agent: navigator.userAgent,
+      device_type: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'mobile' : 'desktop'
     }, data);
     fetch(window.QUIZ_LOG_URL, {
       method: 'POST',
@@ -623,6 +684,8 @@ function logToSheet(data){
     }).catch(function(){});
   } catch(e){}
 }
+
+// 記錄頁面瀏覽
 trackGA('page_view', {page_title: 'IABP 護理訓練首頁'});
 
 // ---- NAVIGATION ----
@@ -633,6 +696,8 @@ function switchMain(idx){
   if(idx===3 && currentQ===0 && quizAnswered.length===0) renderQuiz();
   const tabNames=['簡介','波形','照護','測驗'];
   trackGA('tab_view', {tab_name: tabNames[idx]});
+  // 進入測驗時開始計時
+  if(idx===3 && !QUESTION_START) QUESTION_START = Date.now();
 }
 
 function switchSub(group, idx, btn){
@@ -766,30 +831,51 @@ function renderQuiz(){
 
 function answerQ(chosen){
   const ok=chosen===questions[currentQ].correct;
+  const timeSpent = QUESTION_START ? Math.round((Date.now() - QUESTION_START)/1000) : 0;
   quizAnswered[currentQ]=ok?'correct':'wrong';
   quizAnswered[currentQ+'_c']=chosen;
   if(ok){score+=20;streak++;showToast('✅ 答對！+20分','success')}
   else{streak=0;showToast('❌ 再想想！','danger')}
   document.getElementById('totalScore').textContent=score;
   document.getElementById('streakCount').textContent=streak;
-  // 📊 記錄每題答題狀況
-  trackGA('quiz_answer', {question_num: currentQ+1, is_correct: ok, chosen: chosen, correct_answer: questions[currentQ].correct});
-  logToSheet({event: 'quiz_answer', question_num: currentQ+1, is_correct: ok, chosen_option: chosen, correct_option: questions[currentQ].correct, current_score: score});
+  // 📊 暫存本次作答明細(要在 quiz_complete 時一併送出到明細表)
+  quizAttemptData.push({
+    question_num: currentQ+1,
+    is_correct: ok,
+    chosen_option: chosen,
+    correct_option: questions[currentQ].correct,
+    time_seconds: timeSpent
+  });
+  // GA4 只記錄每題事件(不記到試算表,避免爆量)
+  trackGA('quiz_answer', {question_num: currentQ+1, is_correct: ok, chosen: chosen, correct_answer: questions[currentQ].correct, time_seconds: timeSpent});
+  // 重置下一題的計時器
+  QUESTION_START = Date.now();
   renderQuiz();
 }
 
 function nextQ(){currentQ++;renderQuiz()}
 function showComplete(){
   const c=quizAnswered.filter(v=>v==='correct').length;
+  const totalTime = SESSION_START ? Math.round((Date.now() - SESSION_START)/1000) : 0;
   document.getElementById('completeFinal').textContent=c+'/7';
   document.getElementById('completeMsg').textContent=c>=5?'優秀！臨床能力紮實 🌟':c>=4?'良好！繼續加強 💪':'需要多加練習 📚';
   document.getElementById('completeOv').classList.add('show');
-  // 📊 記錄完整測驗成績
-  trackGA('quiz_complete', {correct_count: c, total_questions: questions.length, final_score: score});
-  logToSheet({event: 'quiz_complete', correct_count: c, total_questions: questions.length, final_score: score, percentage: Math.round(c/questions.length*100)});
+  // 📊 一次送出【總分表】+【明細表】所有資料
+  trackGA('quiz_complete', {correct_count: c, total_questions: questions.length, final_score: score, total_time_seconds: totalTime});
+  logToSheet({
+    event: 'quiz_complete',
+    correct_count: c,
+    total_questions: questions.length,
+    final_score: score,
+    percentage: Math.round(c/questions.length*100),
+    total_time_seconds: totalTime,
+    detail: quizAttemptData  // 一併把明細送過去
+  });
+  // 清空暫存 (下次重考會重新填)
+  quizAttemptData = [];
 }
 function restartQuiz(){
-  currentQ=0;score=0;streak=0;quizAnswered=[];
+  currentQ=0;score=0;streak=0;quizAnswered=[];quizAttemptData=[];QUESTION_START=Date.now();
   document.getElementById('totalScore').textContent=0;
   document.getElementById('streakCount').textContent=0;
   document.getElementById('completeOv').classList.remove('show');
