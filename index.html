@@ -241,10 +241,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
         <div class="logo-sub">台中榮總 CVCU · 2026</div>
       </div>
     </div>
-    <div class="score-row">
-      <div class="sc"><div class="sc-val" id="totalScore">0</div><div class="sc-lbl">得分</div></div>
-      <div class="sc"><div class="sc-val" id="streakCount">0</div><div class="sc-lbl">連勝</div></div>
-    </div>
   </div>
   <div class="prog-wrap"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
 </div>
@@ -252,9 +248,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <!-- MAIN TABS -->
 <div class="main-tabs">
   <button class="main-tab active" id="mt0"><span class="mt-icon">📖</span>簡介</button>
-  <button class="main-tab" id="mt1"><span class="mt-icon">📈</span>波形</button>
-  <button class="main-tab" id="mt2"><span class="mt-icon">🏥</span>照護</button>
-  <button class="main-tab" id="mt3"><span class="mt-icon">🧠</span>測驗</button>
+  <button class="main-tab" id="mt1"><span class="mt-icon">🛠️</span>置入</button>
+  <button class="main-tab" id="mt2"><span class="mt-icon">📈</span>波形</button>
+  <button class="main-tab" id="mt3"><span class="mt-icon">🏥</span>照護</button>
+  <button class="main-tab" id="mt4"><span class="mt-icon">🧠</span>測驗</button>
 </div>
 
 <div class="wrap">
@@ -316,8 +313,132 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 
 </div><!-- /page0 -->
 
+<!-- ===================== PAGE 1: 置入 ===================== -->
+<div id="page1" class="main-page">
+  <div class="sub-tabs" id="insertTabs">
+    <button class="sub-tab active" data-group="ins" data-idx="0">🧰 準備</button>
+    <button class="sub-tab" data-group="ins" data-idx="1">🩺 執行</button>
+    <button class="sub-tab" data-group="ins" data-idx="2">📝 處理記錄</button>
+  </div>
+
+  <!-- SUB 0: 準備 (23%) -->
+  <div id="ins0" class="sub-page active">
+    <div class="sh">🧰 置入前準備</div>
+    <div class="alert alert-info" style="margin-bottom:12px">
+      <span class="ai">ℹ️</span>
+      <div>協助醫師經股動脈置入 IABP 前的準備工作，依序完成各項步驟。</div>
+    </div>
+    <div class="card">
+      <div class="card-title">📋 準備步驟</div>
+      <div class="flow-steps">
+        <div class="fs"><div class="sn">1</div><div class="sc2">
+          <div class="st">核對病人身分與過敏史</div>
+          <div class="sd">詢問全名並核對手圈至少 2 項（姓名／出生年月日／索引號）；確認是否對 Chlorhexidine 或其他皮膚消毒劑過敏，若過敏則避免使用。拉上隔簾給予隱私。</div>
+        </div></div>
+        <div class="fs"><div class="sn">2</div><div class="sc2">
+          <div class="st">醫師說明並簽署同意書</div>
+          <div class="sd">由醫師向病人及家屬說明適應症、置放步驟、注意事項及可能併發症，並填寫檢查治療同意書。</div>
+        </div></div>
+        <div class="fs"><div class="sn">3</div><div class="sc2">
+          <div class="st">備齊用物</div>
+          <div class="sd">IABP 置入用物、主動脈壓力監測及沖洗系統用物、導管置入之護理用物；置入前檢查氦氣容量。</div>
+        </div></div>
+        <div class="fs"><div class="sn">4</div><div class="sc2">
+          <div class="st">洗手</div>
+          <div class="sd">執行標準洗手程序。</div>
+        </div></div>
+        <div class="fs"><div class="sn">5</div><div class="sc2">
+          <div class="st">標示脈動並擺位</div>
+          <div class="sd">以手術專用色筆標示兩側足背脈動、測量雙下肢足踝血壓作為治療前後評估依據。協助病人採仰臥平躺姿勢，露出穿刺部位。</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUB 1: 執行 (45%) -->
+  <div id="ins1" class="sub-page">
+    <div class="sh">🩺 置入執行</div>
+    <div class="alert alert-warn" style="margin-bottom:12px">
+      <span class="ai">⭐</span>
+      <div><strong>確認導管位置（步驟 14）是安全置入的關鍵</strong>，須照 X 光確認，避免阻塞遠、近端動脈。</div>
+    </div>
+    <div class="card">
+      <div class="card-title">🩺 執行步驟</div>
+      <div class="flow-steps">
+        <div class="fs"><div class="sn">6</div><div class="sc2">
+          <div class="st">協助醫師無菌著裝</div>
+          <div class="sd">協助戴帽子口罩、穿手術衣及無菌手套。</div>
+        </div></div>
+        <div class="fs"><div class="sn">7</div><div class="sc2">
+          <div class="st">無菌開盤與備藥</div>
+          <div class="sd">以無菌技術打開 CVP 盤，置入空針、紗布、無菌治療巾及無菌生理食鹽水；待醫師倒入彎盆後注入 heparin，使彎盆內濃度約 1u/1ml。</div>
+        </div></div>
+        <div class="fs"><div class="sn">8</div><div class="sc2">
+          <div class="st">皮膚消毒</div>
+          <div class="sd">於小藥杯內倒入 2% Chlorhexidine（2 個月以下嬰幼兒或過敏者改用其他消毒劑）；採環狀由內往外消毒，<strong>至少停留 2 分鐘</strong>以達消毒效果。</div>
+        </div></div>
+        <div class="fs"><div class="sn">9</div><div class="sc2">
+          <div class="st">協助抽取局麻藥</div>
+          <div class="sd">以酒精棉片消毒 2% Xylocaine 瓶口後，協助醫師抽取。</div>
+        </div></div>
+        <div class="fs"><div class="sn">10</div><div class="sc2">
+          <div class="st">遞送導管套組</div>
+          <div class="sd">以無菌技術拆開 IABP 導管套組（內管、外管各一）遞給醫師置於無菌區；拆開 3-O Nylon 線、尖刀片外包裝，內包裝置於 CVP 盤內。</div>
+        </div></div>
+        <div class="fs"><div class="sn">11</div><div class="sc2">
+          <div class="st">啟動機器與連接壓力監測</div>
+          <div class="sd">醫師經股動脈置入導管後，協助啟動 IABP 機器；連接延長管、將主動脈壓力監測管與壓力監測套組連接，顯示主動脈波形。</div>
+        </div></div>
+        <div class="fs"><div class="sn">12</div><div class="sc2">
+          <div class="st">壓力轉換器零點校正</div>
+          <div class="sd">利用雷射水平儀或連通管原理的 IV set 校正；三路活塞通大氣出口端對準心臟零點位置，按「歸零鍵」直至螢幕顯示「0」或歸零直線。</div>
+        </div></div>
+        <div class="fs"><div class="sn">13</div><div class="sc2">
+          <div class="st">覆蓋與固定</div>
+          <div class="sd">以 Y 型紗布及紗布覆蓋鞘管插入處並以 Mefix 黏貼；外管先以紗布纏繞再用 Mefix 或紙膠固定於腿上，避免撕除時破壞外管塑膠套。</div>
+        </div></div>
+        <div class="fs"><div class="sn w">14</div><div class="sc2">
+          <div class="st" style="color:var(--warn)">⭐ 照 X 光確認導管位置</div>
+          <div class="sd">協助照 X 光確認位置正確：<strong>最佳位置為氣球頂端在左鎖骨下動脈下方 2 公分、末端在腎動脈上方</strong>，可避免阻塞遠近端動脈。由醫師設定引動條件。</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUB 2: 處理及記錄 (7%) -->
+  <div id="ins2" class="sub-page">
+    <div class="sh">📝 處理及記錄</div>
+    <div class="card">
+      <div class="card-title">📝 置入後處理</div>
+      <div class="flow-steps">
+        <div class="fs"><div class="sn">15</div><div class="sc2">
+          <div class="st">廢棄物處理</div>
+          <div class="sd">依廢棄物處理辦法及針頭不回套原則處理。</div>
+        </div></div>
+        <div class="fs"><div class="sn">16</div><div class="sc2">
+          <div class="st">洗手</div>
+          <div class="sd">執行標準洗手程序。</div>
+        </div></div>
+        <div class="fs"><div class="sn">17</div><div class="sc2">
+          <div class="st">記錄與返室生命徵象監測</div>
+          <div class="sd">記錄導管置放時間、位置、驅動模式、雙下肢血循脈動及過程中病人反應。</div>
+        </div></div>
+      </div>
+      <div class="alert alert-info" style="margin-top:6px">
+        <span class="ai">⏱️</span>
+        <div><strong>返室血壓監測頻率：</strong>每 15 分鐘 ×4 次 → 每 30 分鐘 ×4 次 → 每 1 小時 ×2 次（合計 10 次），之後回歸常規測量時間。</div>
+      </div>
+    </div>
+    <div class="alert alert-info" style="margin-bottom:12px">
+      <span class="ai">➡️</span>
+      <div>置入後的持續照護（返室評估、每班監測、機器照護、併發症、撤機）請見<strong>「照護」</strong>分頁。</div>
+    </div>
+  </div>
+</div><!-- /page1 (置入) -->
+
+
 <!-- ===================== PAGE 1: 波形 ===================== -->
-<div id="page1" class="main-page no-sub">
+<div id="page2" class="main-page no-sub">
 
   <div style="padding:14px">
 
@@ -380,7 +501,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div><!-- /page1 -->
 
 <!-- ===================== PAGE 2: 照護 ===================== -->
-<div id="page2" class="main-page">
+<div id="page3" class="main-page">
   <div class="sub-tabs" id="careTabs">
     <button class="sub-tab active" data-group="care" data-idx="0">🚑 返室</button>
     <button class="sub-tab" data-group="care" data-idx="1">✅ 每班清單</button>
@@ -489,7 +610,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
       <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div><div class="cl">尿量記錄</div><div class="cs">評估腎灌流，IABP 位置過低可能影響腎動脈</div></div></div>
       <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div><div class="cl">抗凝監測：APTT q6H</div><div class="cs">CBC/DC（評估出血及 HIT）；腎功能 q2D</div></div></div>
     </div>
-    <div style="padding-bottom:8px">
+<div class="card">
+      <div class="card-title">🫀 血流動力學 / 全身監測</div>
+      <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div><div class="cl">意識狀況變化</div><div class="cs">與返室前比較；導管<strong>過高可能阻塞頸動脈</strong>影響腦部血流→意識改變，<strong>過低阻塞腎動脈</strong>→尿量減少，均通知醫師</div></div></div>
+      <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div><div class="cl">低心輸出量徵候</div><div class="cs">觀察意識、血壓、尿量、四肢溫度變化；出現徵候通知醫師</div></div></div>
+      <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div><div class="cl">血小板監測</div><div class="cs">IABP <strong>充、放氣時會消耗血小板</strong>，注意血小板下降；異常時通知醫師</div></div></div>
+      <div class="ci" onclick="toggleCheck(this)"><div class="cb">✓</div><div><div class="cl">心輸出量指標判斷</div><div class="cs">有肺動脈導管者：注意 <span class="tag tb">SVR</span>（週邊血管阻力）變化，可監測 CI（至少 &gt;2.2 L/min）；無肺動脈導管者：依 CVP 之 SVO₂ 或 PiCCO 之 SVO₂ 數值判斷</div></div></div>
+    </div>
+        <div style="padding-bottom:8px">
       <button onclick="submitChecklist()" style="background:var(--success);color:#000;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,'PingFang TC','Heiti TC','Microsoft JhengHei',sans-serif;width:100%">✅ 提交交班清單</button>
     </div>
   </div>
@@ -573,7 +701,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 </div><!-- /page2 -->
 
 <!-- ===================== PAGE 3: 測驗 ===================== -->
-<div id="page3" class="main-page no-sub">
+<div id="page4" class="main-page no-sub">
   <div style="padding:14px">
     <div class="sh">🧠 情境關卡測驗</div>
     <div id="quizContainer"></div>
@@ -591,14 +719,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
     <div class="ci2">🎉</div>
     <div class="ct">測驗完成！</div>
     <div id="completeMsg" style="font-size:13px;color:var(--text2)"></div>
-    <div class="cs2" id="completeFinal">0/6</div>
+    <div class="cs2" id="completeFinal">0/8</div>
     <button class="cc" onclick="restartQuiz()">重新挑戰</button>
   </div>
 </div>
 
 <script>
 // ---- STATE ----
-let score=0, streak=0, quizAnswered=[], currentQ=0, isPlugged=false;
+let quizAnswered=[], currentQ=0, isPlugged=false;
 let animFrame, miniFrame;
 
 /* ============================================================
@@ -690,12 +818,12 @@ trackGA('page_view', {page_title: 'IABP 護理訓練首頁'});
 function switchMain(idx){
   document.querySelectorAll('.main-page').forEach((p,i)=>p.classList.toggle('active',i===idx));
   document.querySelectorAll('.main-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
-  if(idx===2) setTimeout(initMiniWave,100);
-  if(idx===3 && currentQ===0 && quizAnswered.length===0) renderQuiz();
-  const tabNames=['簡介','波形','照護','測驗'];
+  if(idx===3) setTimeout(initMiniWave,100);
+  if(idx===4 && currentQ===0 && quizAnswered.length===0) renderQuiz();
+  const tabNames=['簡介','置入','波形','照護','測驗'];
   trackGA('tab_view', {tab_name: tabNames[idx]});
   // 進入測驗時開始計時
-  if(idx===3 && !QUESTION_START) QUESTION_START = Date.now();
+  if(idx===4 && !QUESTION_START) QUESTION_START = Date.now();
 }
 
 function switchSub(group, idx, btn){
@@ -797,6 +925,19 @@ const questions=[
     correct:1,
     explanation:"✅ 正確！IABP 撤機由醫師決定時機，護理師依醫囑協助。撤機方式：①降低 assist ratio（1:1→1:2→1:3）或②逐漸降低 augmentation。拔除：hold heparin 4h → ACT＜180秒 → STANDBY→turn off → 50ml 空針反抽排氣（必須！防止傷害股動脈）→ 加壓止血。移除後 12h / 24h 觀察傷口並聽診 bruits。",
     wrongExplanation:"❌ IABP 撤機有標準步驟：①hold heparin 4h ②確認 ACT＜180秒 ③STANDBY→turn off ④50ml 空針反抽排氣（必須！）⑤加壓止血。撤機時機由醫師決定，護理師不可自行決定。"
+  },
+{
+    scenario:"你正協助醫師經股動脈置入 IABP。導管放置完成、機器運轉後，醫師請你協助照 portable X-ray。",
+    question:"關於確認 IABP 導管位置，下列敘述何者正確？",
+    options:[
+      "只要波形正常，不一定要照 X-ray 確認位置",
+      "最佳位置為氣球頂端在左鎖骨下動脈下方約 2 公分、末端在腎動脈上方；過高會阻塞左鎖骨下動脈，過低會阻塞腎動脈",
+      "氣球位置越高越好，越靠近主動脈弓越安全",
+      "位置由護理師依經驗判斷即可，不需醫師設定引動條件"
+    ],
+    correct:1,
+    explanation:"✅ 正確！IABP 最佳位置為氣球頂端在左鎖骨下動脈下方約 2 公分、末端在腎動脈上方。位置過高會阻塞左鎖骨下動脈（可能影響左手灌流／腦部血流），過低會阻塞腎動脈（影響尿量／腎灌流）。此步驟須照 X-ray 確認，並由醫師設定引動條件。",
+    wrongExplanation:"❌ IABP 置入後必須照 portable X-ray 確認位置。最佳位置為氣球頂端在左鎖骨下動脈下方約 2 公分、末端在腎動脈上方；過高阻塞左鎖骨下動脈，過低阻塞腎動脈。位置確認與引動條件設定由醫師負責。"
   }
 ];
 
@@ -832,10 +973,8 @@ function answerQ(chosen){
   const timeSpent = QUESTION_START ? Math.round((Date.now() - QUESTION_START)/1000) : 0;
   quizAnswered[currentQ]=ok?'correct':'wrong';
   quizAnswered[currentQ+'_c']=chosen;
-  if(ok){score+=20;streak++;showToast('✅ 答對！+20分','success')}
-  else{streak=0;showToast('❌ 再想想！','danger')}
-  document.getElementById('totalScore').textContent=score;
-  document.getElementById('streakCount').textContent=streak;
+  if(ok){showToast('✅ 答對！','success')}
+  else{showToast('❌ 再想想！','danger')}
   // 📊 暫存本次作答明細(要在 quiz_complete 時一併送出到明細表)
   quizAttemptData.push({
     question_num: currentQ+1,
@@ -855,16 +994,15 @@ function nextQ(){currentQ++;renderQuiz()}
 function showComplete(){
   const c=quizAnswered.filter(v=>v==='correct').length;
   const totalTime = SESSION_START ? Math.round((Date.now() - SESSION_START)/1000) : 0;
-  document.getElementById('completeFinal').textContent=c+'/7';
+  document.getElementById('completeFinal').textContent=c+'/'+questions.length;
   document.getElementById('completeMsg').textContent=c>=5?'優秀！臨床能力紮實 🌟':c>=4?'良好！繼續加強 💪':'需要多加練習 📚';
   document.getElementById('completeOv').classList.add('show');
   // 📊 一次送出【總分表】+【明細表】所有資料
-  trackGA('quiz_complete', {correct_count: c, total_questions: questions.length, final_score: score, total_time_seconds: totalTime});
+  trackGA('quiz_complete', {correct_count: c, total_questions: questions.length, total_time_seconds: totalTime});
   logToSheet({
     event: 'quiz_complete',
     correct_count: c,
     total_questions: questions.length,
-    final_score: score,
     percentage: Math.round(c/questions.length*100),
     total_time_seconds: totalTime,
     detail: quizAttemptData  // 一併把明細送過去
@@ -873,9 +1011,7 @@ function showComplete(){
   quizAttemptData = [];
 }
 function restartQuiz(){
-  currentQ=0;score=0;streak=0;quizAnswered=[];quizAttemptData=[];QUESTION_START=Date.now();
-  document.getElementById('totalScore').textContent=0;
-  document.getElementById('streakCount').textContent=0;
+  currentQ=0;quizAnswered=[];quizAttemptData=[];QUESTION_START=Date.now();
   document.getElementById('completeOv').classList.remove('show');
   renderQuiz();updateProg();
 }
@@ -913,7 +1049,6 @@ function plugIn(){
   document.getElementById('powerStat').className='pstat ac';
   document.getElementById('powerStat').textContent='AC POWER ✓';
   showToast('✅ 電源確認完成！使用市電','success');
-  score+=10;document.getElementById('totalScore').textContent=score;
 }
 
 // ---- CHECKLIST ----
@@ -922,7 +1057,7 @@ function submitChecklist(){
   const all=document.querySelectorAll('#care1 .ci').length;
   const chk=document.querySelectorAll('#care1 .ci.chk').length;
   const pct=Math.round(chk/all*100);
-  if(pct===100){showToast('🎉 交班清單全部完成！','success');score+=30;document.getElementById('totalScore').textContent=score}
+  if(pct===100){showToast('🎉 交班清單全部完成！','success');}
   else showToast(`⚠️ 完成 ${pct}%，請確認所有項目`,'warn');
   // 📊 記錄交班清單完成率
   trackGA('checklist_submit', {completion_pct: pct, checked: chk, total: all});
@@ -980,7 +1115,7 @@ function selectWave(el, key) {
 // Bind all tabs via addEventListener for iOS local file compatibility
 document.addEventListener('DOMContentLoaded', function() {
   // Main tabs
-  [0,1,2,3].forEach(function(i) {
+  [0,1,2,3,4].forEach(function(i) {
     var btn = document.getElementById('mt' + i);
     if (btn) btn.addEventListener('click', function() { switchMain(i); });
   });
